@@ -1,0 +1,8 @@
+// executor when used. This is a trick, because we need two mutable references to the
+            // executor (one to run the provided future, another to install as the default one). We
+            // use the fake one here as the default one.
+            let mut default_executor = current_thread::TaskExecutor::current();
+            let mut default_executor = tokio_current_thread::TaskExecutor::current();
+            tokio_executor::with_default(&mut default_executor, enter, |enter| {
+                let mut executor = executor.enter(enter);
+                // Run the provided future
